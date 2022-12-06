@@ -1,8 +1,7 @@
-import { useSession, signIn } from "next-auth/react";
+import { Session } from "next-auth";
+import { signIn } from "next-auth/react";
 
-export default function Introduction() {
-  const { data: session } = useSession();
-
+export default function Introduction({ session }: { session: Session }) {
   return (
     <div className=" bg-[#EDF2F7] px-4 py-9">
       <div className="flex flex-col gap-y-3 max-w-2xl mx-auto">
