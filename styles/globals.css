@@ -4,10 +4,10 @@
 
 @layer components {
   .btn {
-    @apply bg-white text-lg font-bold px-3 py-1.5 rounded-md hover:bg-[#EDF2F7] duration-700 w-fit mx-auto sm:mx-0;
+    @apply bg-white text-lg font-bold py-3 rounded-md hover:bg-[#EDF2F7] duration-700;
   }
 
   .icon {
-    @apply inline-block -ml-[0.25rem] mr-[0.5rem] mb-1;
+    @apply w-6 h-6 mx-auto;
   }
 }
