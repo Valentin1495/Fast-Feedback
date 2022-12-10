@@ -30,7 +30,7 @@ export default function Navbar() {
           <img
             src={session.data?.user?.image}
             alt="profile picture"
-            className="h-8 w-8 rounded-full"
+            className="h-8 w-8 rounded-full object-cover"
           />
         </Link>
       </div>
