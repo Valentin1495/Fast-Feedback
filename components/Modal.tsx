@@ -1,41 +1,28 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { Cross2Icon } from "@radix-ui/react-icons";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useRef } from "react";
-
-interface Inputs {
-  name: string;
-  link: string;
-}
-
-const schema = yup
-  .object()
-  .shape({
-    name: yup.string().max(20).required(),
-    link: yup.string().url().required(),
-  })
-  .required();
+import { FormEvent, useEffect, useRef, useState } from "react";
 
 export default function Modal() {
-  const closeRef = useRef<HTMLButtonElement>(null);
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Inputs>({
-    resolver: yupResolver(schema),
-  });
+  const [open, setOpen] = useState(false);
 
-  const onSubmit = (data: Inputs) => {
-    console.log(JSON.stringify(data));
+  const [nameFocus, setNameFocus] = useState(false);
+  const [linkFocus, setLinkFocus] = useState(false);
 
-    closeRef.current?.click();
+  const nameRef = useRef<HTMLInputElement>(null);
+  const linkRef = useRef<HTMLInputElement>(null);
+
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    setOpen(false);
+    console.log(nameRef.current?.value, linkRef.current?.value);
   };
 
+  useEffect(() => {
+    setNameFocus(false);
+    setLinkFocus(false);
+  }, [open]);
+
   return (
-    <Dialog.Root>
+    <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
         <button className="hover:cursor-pointer bg-black text-white text-lg font-bold px-3 py-1.5 rounded-md hover:text-black hover:bg-white duration-700">
           Add your First Site
@@ -46,57 +33,52 @@ export default function Modal() {
         <Dialog.Content className="DialogContent">
           <Dialog.Title className="DialogTitle">Add site</Dialog.Title>
           <Dialog.Description className="DialogDescription">
-            Add site here. Click save when you're done.
+            Add site here. Click create when you're done.
           </Dialog.Description>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit}>
             <fieldset className="Fieldset">
               <label className="Label" htmlFor="name">
                 Name
               </label>
               <input
-                {...register("name")}
+                onBlur={() => setNameFocus(true)}
                 id="name"
+                name="name"
                 placeholder="My site"
-                className="Input"
+                className="Input name"
+                ref={nameRef}
+                data-focused={nameFocus.toString()}
+                required
+                pattern="^[A-Za-z0-9]{3,16}$"
               />
+              <p className="nameError msg">
+                Name should be 3-16 characters and shouldn't include any special
+                character.
+              </p>
             </fieldset>
-            {errors?.name?.type === "required" && (
-              <p className="error">Required</p>
-            )}
-            {errors?.name?.type === "max" && (
-              <p className="error mb-3">Must be 20 characters or less</p>
-            )}
             <fieldset className="Fieldset">
               <label className="Label" htmlFor="link">
                 Link
               </label>
               <input
-                {...register("link")}
-                className="Input"
+                ref={linkRef}
+                onBlur={() => setLinkFocus(true)}
+                type="url"
+                className="Input link"
                 id="link"
+                name="link"
                 placeholder="https://website.com"
+                required
+                data-focused={linkFocus.toString()}
               />
+              <p className="linkError msg">Invalid url.</p>
             </fieldset>
-            {errors?.link?.type === "required" && (
-              <p className="error">Required</p>
-            )}
-            {errors?.link?.type === "url" && (
-              <p className="error">Invalid website url</p>
-            )}
             <div className="flex mt-[25px] justify-end">
               <button type="submit" className="Button green">
                 Create
               </button>
-              <Dialog.Close asChild>
-                <button ref={closeRef} className="hidden" />
-              </Dialog.Close>
             </div>
           </form>
-          <Dialog.Close asChild>
-            <button className="IconButton" aria-label="Close">
-              <Cross2Icon />
-            </button>
-          </Dialog.Close>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

@@ -19,7 +19,7 @@ export default function Sites() {
             </p>
             <p className="text-xl mb-10">Start today, then grow with us 🔥</p>
 
-            <button className="bg-black text-white text-lg font-bold px-3 py-1.5 rounded-md hover:text-black hover:bg-white duration-700">
+            <button className="bg-black text-white text-lg font-bold px-3 py-1.5 rounded-md hover:text-black hover:bg-white duration-700 hover:cursor-pointer">
               Upgrade to Starter
             </button>
           </article>
