@@ -14,9 +14,11 @@ export default function Home({ session }: { session: Session }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
+  const session = await getSession(context);
+
   return {
     props: {
-      session: await getSession(context),
+      session,
     },
   };
 };

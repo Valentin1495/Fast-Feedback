@@ -2,7 +2,8 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 
 export default function Navbar() {
-  const session = useSession();
+  const { data: session } = useSession();
+
   return (
     <nav className="px-6 py-3 bg-white">
       <div className="max-w-5xl mx-auto flex items-center">
@@ -28,7 +29,7 @@ export default function Navbar() {
         </div>
         <Link href="/account">
           <img
-            src={session.data?.user?.image}
+            src={session?.user?.image}
             alt="profile picture"
             className="h-8 w-8 rounded-full object-cover"
           />
