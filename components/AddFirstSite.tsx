@@ -4,10 +4,10 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import supabase from "../lib/supabase";
 import { useSession } from "next-auth/react";
 
-export default function Modal({
+export default function AddFirstSite({
   setOpenToast,
 }: {
-  setOpenToast: React.Dispatch<React.SetStateAction<boolean>>;
+  setOpenToast: SetOpenToast;
 }) {
   const { data: session } = useSession();
 

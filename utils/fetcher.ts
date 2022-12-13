@@ -1,6 +1,7 @@
 const fetcher = async (url: string) => {
   const res = await fetch(url);
-  return res.json();
+  const data = await res.json();
+  return { sites: data };
 };
 
 export default fetcher;

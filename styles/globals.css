@@ -285,4 +285,12 @@
   .toastButton.toastGreen:focus {
     box-shadow: 0 0 0 2px var(--green8);
   }
+
+  .category {
+    @apply uppercase p-2 font-semibold text-lg;
+  }
+
+  .item {
+    @apply truncate p-2 bg-gray-100 text-lg;
+  }
 }
