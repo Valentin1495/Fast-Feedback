@@ -11,7 +11,6 @@ export default function Sites() {
   const [openToast, setOpenToast] = useState(false);
 
   const { data, isLoading } = useSWR("/api/sites", fetcher);
-  console.log(data);
 
   if (isLoading) {
     return "Loading...";
@@ -23,16 +22,16 @@ export default function Sites() {
       <div className="h-[calc(100vh-57.5px)] px-6 relative bg-[#EDF2F7]">
         <section
           className="max-w-5xl w-full px-6 xl:px-0 absolute 
-      top-24 space-y-8 left-1/2 -translate-x-1/2 "
+          top-24 left-1/2 -translate-x-1/2 "
         >
-          {data?.sites ? (
-            <>
+          {data?.sites.length ? (
+            <div className="space-y-8">
               <div className="flex items-center">
                 <div className="flex-1">
                   <h3 className="text-2xl font-light">Sites</h3>
                   <h1 className="text-4xl font-bold">My Sites</h1>
                 </div>
-                <AddSite setOpenToast={setOpenToast} />
+                <AddSite setOpenToast={setOpenToast}>+ Add Site</AddSite>
               </div>
 
               <article className="bg-white space-y-3 px-3 py-10">
@@ -46,7 +45,7 @@ export default function Sites() {
                   <Site site={site} key={site.id} />
                 ))}
               </article>
-            </>
+            </div>
           ) : (
             <Paid setOpenToast={setOpenToast} />
           )}

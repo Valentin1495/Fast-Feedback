@@ -1,15 +1,18 @@
 import * as Dialog from "@radix-ui/react-dialog";
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, ReactNode, useEffect, useRef, useState } from "react";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import supabase from "../lib/supabase";
-import { useSession } from "next-auth/react";
+import useSWR from "swr";
+import fetcher from "../utils/fetcher";
 
 export default function AddSite({
   setOpenToast,
+  children,
 }: {
   setOpenToast: SetOpenToast;
+  children: ReactNode;
 }) {
-  const { data: session } = useSession();
+  const { data, mutate } = useSWR("/api/sites", fetcher);
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -25,15 +28,17 @@ export default function AddSite({
   };
 
   const createSite = async () => {
-    const { error } = await supabase.from("sites").insert([
-      {
-        username: session?.user?.name,
-        photoUrl: session?.user?.image,
-        site: nameRef.current?.value,
-        link: linkRef.current?.value,
-      },
-    ]);
-    console.log(error);
+    const { data: newSite } = await supabase
+      .from("sites")
+      .insert([
+        {
+          site: nameRef.current?.value,
+          link: linkRef.current?.value,
+        },
+      ])
+      .select();
+
+    return newSite;
   };
 
   const handleSubmit = (event: FormEvent) => {
@@ -43,7 +48,9 @@ export default function AddSite({
       setOpenToast(true);
     }, 100);
 
-    createSite();
+    const newSite = createSite();
+
+    mutate({ ...data, sites: newSite });
   };
 
   useEffect(() => {
@@ -55,8 +62,8 @@ export default function AddSite({
     <div>
       <Dialog.Root open={openModal} onOpenChange={setOpenModal}>
         <Dialog.Trigger asChild>
-          <button className="hover:cursor-pointer bg-black text-white text-lg font-bold px-3 py-1.5 rounded-md hover:text-black hover:bg-[#EDF2F7] duration-700">
-            + Add Site
+          <button className="hover:cursor-pointer bg-black text-white text-lg font-bold px-3 py-1.5 rounded-md hover:text-black hover:bg-white duration-700">
+            {children}
           </button>
         </Dialog.Trigger>
         <Dialog.Portal>
