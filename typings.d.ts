@@ -6,4 +6,11 @@ interface Site {
   link: string;
 }
 
+interface Feedback {
+  id: number;
+  created_at: string;
+  author: string;
+  text: string;
+}
+
 type SetOpenToast = React.Dispatch<React.SetStateAction<boolean>>;

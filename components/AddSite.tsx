@@ -28,7 +28,7 @@ export default function AddSite({
   };
 
   const createSite = async () => {
-    const { data: newSite } = await supabase
+    const { data } = await supabase
       .from("sites")
       .insert([
         {
@@ -38,7 +38,7 @@ export default function AddSite({
       ])
       .select();
 
-    return newSite;
+    return data;
   };
 
   const handleSubmit = (event: FormEvent) => {
