@@ -8,11 +8,13 @@ import fetcher from "../utils/fetcher";
 export default function AddSite({
   setOpenToast,
   children,
+  uid,
 }: {
   setOpenToast: SetOpenToast;
   children: ReactNode;
+  uid: string;
 }) {
-  const { data, mutate } = useSWR("/api/sites", fetcher);
+  const { data, mutate } = useSWR(`/api/sites/${uid}`, fetcher);
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -34,6 +36,7 @@ export default function AddSite({
         {
           site: nameRef.current?.value,
           link: linkRef.current?.value,
+          authorId: Number(uid),
         },
       ])
       .select();

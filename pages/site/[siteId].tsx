@@ -22,7 +22,7 @@ export default function FeedbackPage() {
         <button>Add Comment</button>
       </div>
       <div>
-        {allFeedback.map((feedback: Feedback) => (
+        {allFeedback?.map((feedback: Feedback) => (
           <Feedback key={feedback.id} {...feedback} />
         ))}
       </div>

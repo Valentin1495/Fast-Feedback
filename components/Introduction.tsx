@@ -2,6 +2,8 @@ import { Session } from "next-auth";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 
+import { v4 as uuidv4 } from "uuid";
+
 export default function Introduction({ session }: { session: Session }) {
   const signInWithGoogle = () => {
     signIn("google");
@@ -13,7 +15,7 @@ export default function Introduction({ session }: { session: Session }) {
   const signInWithTwitter = () => {
     signIn("twitter");
   };
-
+  console.log(session.user?.id, typeof session.user?.id);
   return (
     <div className=" bg-[#EDF2F7] px-4 py-9">
       <div className="flex flex-col gap-y-3 max-w-2xl mx-auto">
@@ -83,7 +85,7 @@ export default function Introduction({ session }: { session: Session }) {
               </div>
             </div>
           ) : (
-            <Link href="/sites">
+            <Link href={`/sites/${session.user?.id}`}>
               <button className="bg-black text-white text-lg font-bold px-3 py-1.5 rounded-md hover:text-black hover:bg-[#EDF2F7] duration-700 w-fit mx-auto sm:mx-0">
                 View Dashboard
               </button>

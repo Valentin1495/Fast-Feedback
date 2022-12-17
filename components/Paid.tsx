@@ -1,6 +1,12 @@
 import AddSite from "./AddSite";
 
-export default function Paid({ setOpenToast }: { setOpenToast: SetOpenToast }) {
+export default function Paid({
+  setOpenToast,
+  uid,
+}: {
+  setOpenToast: SetOpenToast;
+  uid: string;
+}) {
   return (
     <div className="space-y-8">
       <div>
@@ -10,7 +16,9 @@ export default function Paid({ setOpenToast }: { setOpenToast: SetOpenToast }) {
       <article className="bg-white text-center py-20">
         <p className="text-2xl font-bold mb-3">You haven't added any sites.</p>
         <p className="text-xl mb-10">Let's get started 🚀</p>
-        <AddSite setOpenToast={setOpenToast}>Add your First Site</AddSite>
+        <AddSite uid={uid} setOpenToast={setOpenToast}>
+          Add your First Site
+        </AddSite>
       </article>
     </div>
   );

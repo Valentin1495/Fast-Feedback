@@ -1,8 +1,13 @@
 import supabase from "./supabase";
 
-export async function getAllSites() {
-  const { data: sites } = await supabase.from("sites").select();
-
+export async function getUserSites(uid: string) {
+  const { error, data: sites } = await supabase
+    .from("sites")
+    .select()
+    .eq("authorId", Number(uid));
+  if (error) {
+    console.log(error);
+  }
   return sites;
 }
 

@@ -1,16 +1,25 @@
-import Navbar from "../components/Navbar";
-import Paid from "../components/Paid";
+import Navbar from "@/components/Navbar";
+import Paid from "@/components/Paid";
 import useSWR from "swr";
-import fetcher from "../utils/fetcher";
-import Site from "../components/Site";
-import Notification from "../components/Notification";
+import fetcher from "@/utils/fetcher";
+import Site from "@/components/Site";
+import Notification from "@/components/Notification";
 import { useState } from "react";
-import AddSite from "../components/AddSite";
+import AddSite from "@/components/AddSite";
+import { useRouter } from "next/router";
 
 export default function Sites() {
   const [openToast, setOpenToast] = useState(false);
 
-  const { data, isLoading } = useSWR("/api/sites", fetcher);
+  const router = useRouter();
+
+  const uid = router.query.uid as string;
+
+  const { data, isLoading } = useSWR(`/api/sites/${uid}`, fetcher);
+
+  if (data) {
+    console.log(data);
+  }
 
   if (isLoading) {
     return "Loading...";
@@ -24,14 +33,16 @@ export default function Sites() {
           className="max-w-5xl w-full px-6 xl:px-0 absolute 
           top-24 left-1/2 -translate-x-1/2 "
         >
-          {data?.sites.length ? (
+          {data?.sites?.length ? (
             <div className="space-y-8">
               <div className="flex items-center">
                 <div className="flex-1">
                   <h3 className="text-2xl font-light">Sites</h3>
                   <h1 className="text-4xl font-bold">My Sites</h1>
                 </div>
-                <AddSite setOpenToast={setOpenToast}>+ Add Site</AddSite>
+                <AddSite uid={uid} setOpenToast={setOpenToast}>
+                  + Add Site
+                </AddSite>
               </div>
 
               <article className="bg-white space-y-3 px-3 py-10">
@@ -47,7 +58,7 @@ export default function Sites() {
               </article>
             </div>
           ) : (
-            <Paid setOpenToast={setOpenToast} />
+            <Paid uid={uid} setOpenToast={setOpenToast} />
           )}
         </section>
         <Notification openToast={openToast} setOpenToast={setOpenToast} />

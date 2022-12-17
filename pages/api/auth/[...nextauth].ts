@@ -20,4 +20,15 @@ export default NextAuth({
     }),
   ],
   secret: process.env.SECRET,
+  callbacks: {
+    session: async ({ session, token }) => {
+      if (session?.user) {
+        session.user.id = token.sub!;
+      }
+      return session;
+    },
+  },
+  session: {
+    strategy: "jwt",
+  },
 });
