@@ -1,14 +1,16 @@
-import supabase from "./supabase";
+import supabase from "@/lib/supabase";
 
 export async function getUserSites(uid: string) {
-  const { error, data: sites } = await supabase
+  const { data, error } = await supabase
     .from("sites")
-    .select()
-    .eq("authorId", Number(uid));
+    .select("id, created_at, site, link")
+    .eq("authorId", uid);
+
   if (error) {
     console.log(error);
   }
-  return sites;
+
+  return data;
 }
 
 export async function getAllFeedback(siteId: string) {

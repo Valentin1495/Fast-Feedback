@@ -9,6 +9,7 @@ export default function Site({ site }: { site: Site }) {
       <Link href={`/site/${site.id}`} className="item">
         View Feedback
       </Link>
+
       <span className="item">{format(new Date(site.created_at), "PPpp")}</span>
     </div>
   );

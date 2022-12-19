@@ -4,17 +4,16 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 import supabase from "../lib/supabase";
 import useSWR from "swr";
 import fetcher from "../utils/fetcher";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 export default function AddSite({
   setOpenToast,
   children,
-  uid,
 }: {
   setOpenToast: SetOpenToast;
   children: ReactNode;
-  uid: string;
 }) {
-  const { data, mutate } = useSWR(`/api/sites/${uid}`, fetcher);
+  const { data, mutate } = useSWR("/api/sites", fetcher);
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -29,21 +28,27 @@ export default function AddSite({
     setLinkFocus(false);
   };
 
+  const { user } = useUser();
+
   const createSite = async () => {
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("sites")
       .insert([
         {
+          authorId: user?.sid,
           site: nameRef.current?.value,
           link: linkRef.current?.value,
-          authorId: Number(uid),
         },
       ])
       .select();
 
+    if (error) {
+      console.log(error);
+    }
+
     return data;
   };
-
+  console.log(data);
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     setOpenModal(false);
@@ -53,7 +58,7 @@ export default function AddSite({
 
     const newSite = createSite();
 
-    mutate({ ...data, sites: newSite });
+    mutate({ sites: newSite, ...data });
   };
 
   useEffect(() => {
