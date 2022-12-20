@@ -13,7 +13,7 @@ export default function AddSite({
   setOpenToast: SetOpenToast;
   children: ReactNode;
 }) {
-  const { data, mutate } = useSWR("/api/sites", fetcher);
+  const { mutate, data } = useSWR("/api/sites", fetcher);
 
   const [openModal, setOpenModal] = useState(false);
 
@@ -30,14 +30,14 @@ export default function AddSite({
 
   const { user } = useUser();
 
-  const createSite = async () => {
+  const createSite = async (authorId: string, name: string, link: string) => {
     const { data, error } = await supabase
       .from("sites")
       .insert([
         {
-          authorId: user?.sid,
-          site: nameRef.current?.value,
-          link: linkRef.current?.value,
+          authorId,
+          name,
+          link,
         },
       ])
       .select();
@@ -46,19 +46,31 @@ export default function AddSite({
       console.log(error);
     }
 
-    return data;
+    return data as Site[];
   };
-  console.log(data);
-  const handleSubmit = (event: FormEvent) => {
+
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setOpenModal(false);
     window.setTimeout(() => {
       setOpenToast(true);
     }, 100);
 
-    const newSite = createSite();
+    const authorId = user?.sid as string;
+    const name = nameRef.current?.value as string;
+    const link = linkRef.current?.value as string;
 
-    mutate({ sites: newSite, ...data });
+    const newSite = await createSite(authorId, name, link);
+
+    const { id, created_at } = newSite[0];
+
+    // console.log(newSite);
+    // console.log(data);
+    await mutate({
+      optimisticData: [{ ...newSite[0], id, created_at }, ...data],
+      populateCache: true,
+      revalidate: false,
+    });
   };
 
   useEffect(() => {

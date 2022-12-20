@@ -9,5 +9,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
 
   const sites = await getUserSites(uid);
 
-  res.status(200).json({ sites });
+  res.status(200).json(sites);
 };

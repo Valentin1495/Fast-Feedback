@@ -3,7 +3,7 @@ import supabase from "@/lib/supabase";
 export async function getUserSites(uid: string) {
   const { data, error } = await supabase
     .from("sites")
-    .select("id, created_at, site, link")
+    .select("id, authorId, created_at, name, link")
     .eq("authorId", uid);
 
   if (error) {

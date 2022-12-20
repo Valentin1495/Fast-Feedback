@@ -27,7 +27,7 @@ export default function Navbar() {
             Feedback
           </Link>
         </div>
-        <Link href="/account">
+        <Link href="/api/auth/logout">
           <img
             src={user?.picture!}
             alt="profile picture"

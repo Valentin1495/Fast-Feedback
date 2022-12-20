@@ -1,7 +1,14 @@
 interface Site {
   id: number;
+  authorId: string;
   created_at: string;
-  site: string;
+  name: string;
+  link: string;
+}
+
+interface newSite {
+  authorId: string;
+  name: string;
   link: string;
 }
 

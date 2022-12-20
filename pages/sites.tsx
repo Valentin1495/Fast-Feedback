@@ -12,8 +12,6 @@ export default function Sites() {
 
   const { data, isLoading } = useSWR("/api/sites", fetcher);
 
-  console.log(data);
-
   if (isLoading) {
     return "Loading...";
   }
@@ -26,7 +24,7 @@ export default function Sites() {
           className="max-w-5xl w-full px-6 xl:px-0 absolute 
           top-24 left-1/2 -translate-x-1/2 "
         >
-          {data ? (
+          {data?.length ? (
             <div className="space-y-8">
               <div className="flex items-center">
                 <div className="flex-1">
@@ -43,7 +41,7 @@ export default function Sites() {
                   <span className="category">Feedback link</span>
                   <span className="category">Date added</span>
                 </p>
-                {data?.sites.map((site: Site) => (
+                {data?.map((site: Site) => (
                   <Site site={site} key={site.id} />
                 ))}
               </article>
