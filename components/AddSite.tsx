@@ -30,16 +30,10 @@ export default function AddSite({
 
   const { user } = useUser();
 
-  const createSite = async (authorId: string, name: string, link: string) => {
+  const createSite = async (siteInfo: siteInfo) => {
     const { data, error } = await supabase
       .from("sites")
-      .insert([
-        {
-          authorId,
-          name,
-          link,
-        },
-      ])
+      .insert([siteInfo])
       .select();
 
     if (error) {
@@ -56,16 +50,16 @@ export default function AddSite({
       setOpenToast(true);
     }, 100);
 
-    const authorId = user?.sid as string;
-    const name = nameRef.current?.value as string;
-    const link = linkRef.current?.value as string;
+    const siteInfo = {
+      authorId: user?.sub as string,
+      name: nameRef.current?.value as string,
+      link: linkRef.current?.value as string,
+    };
 
-    const newSite = await createSite(authorId, name, link);
+    const newSite = await createSite(siteInfo);
 
     const { id, created_at } = newSite[0];
 
-    // console.log(newSite);
-    // console.log(data);
     await mutate({
       optimisticData: [{ ...newSite[0], id, created_at }, ...data],
       populateCache: true,
@@ -82,7 +76,7 @@ export default function AddSite({
     <div>
       <Dialog.Root open={openModal} onOpenChange={setOpenModal}>
         <Dialog.Trigger asChild>
-          <button className="hover:cursor-pointer bg-black text-white text-lg font-bold px-3 py-1.5 rounded-md hover:text-black hover:bg-white duration-700">
+          <button className="hover:cursor-pointer bg-white text-lg text-black font-bold px-3 py-1.5 rounded-md hover:text-white hover:bg-black duration-700">
             {children}
           </button>
         </Dialog.Trigger>

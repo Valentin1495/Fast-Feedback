@@ -6,7 +6,7 @@ interface Site {
   link: string;
 }
 
-interface newSite {
+interface siteInfo {
   authorId: string;
   name: string;
   link: string;

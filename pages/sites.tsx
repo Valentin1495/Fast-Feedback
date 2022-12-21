@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+import Header from "@/components/Header";
 import Paid from "@/components/Paid";
 import useSWR from "swr";
 import fetcher from "@/utils/fetcher";
@@ -17,30 +17,29 @@ export default function Sites() {
   }
 
   return (
-    <div>
-      <Navbar />
-      <div className="h-[calc(100vh-57.5px)] px-6 relative bg-[#EDF2F7]">
-        <section
-          className="max-w-5xl w-full px-6 xl:px-0 absolute 
-          top-24 left-1/2 -translate-x-1/2 "
-        >
+    <div className="space-y-5 h-screen bg-black">
+      <Header />
+      <div className="bg-black px-6 h-fit">
+        <section className="max-w-5xl w-full mx-auto">
           {data?.length ? (
-            <div className="space-y-8">
+            <div className="space-y-5">
               <div className="flex items-center">
                 <div className="flex-1">
-                  <h3 className="text-2xl font-light">Sites</h3>
-                  <h1 className="text-4xl font-bold">My Sites</h1>
+                  <h3 className="text-2xl font-light text-white">Sites</h3>
+                  <h1 className="text-4xl font-bold text-white">My Sites</h1>
                 </div>
                 <AddSite setOpenToast={setOpenToast}>+ Add Site</AddSite>
               </div>
 
-              <article className="bg-white space-y-3 px-3 py-10">
-                <p className="grid grid-cols-4 text-center gap-3">
+              <article className="space-y-3 py-3">
+                <div className="grid grid-cols-2 md:grid-cols-4 text-center gap-3">
                   <span className="category">Name</span>
                   <span className="category">Site link</span>
-                  <span className="category">Feedback link</span>
-                  <span className="category">Date added</span>
-                </p>
+                  <span className="category hidden md:inline">
+                    Feedback link
+                  </span>
+                  <span className="category hidden md:inline">Date added</span>
+                </div>
                 {data?.map((site: Site) => (
                   <Site site={site} key={site.id} />
                 ))}

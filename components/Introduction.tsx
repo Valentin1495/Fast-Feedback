@@ -9,7 +9,7 @@ export default function Introduction() {
   if (error) return <div>{error.message}</div>;
 
   return (
-    <div className=" bg-[#EDF2F7] px-4 py-9">
+    <div className="bg-[#EDF2F7] px-4 py-9">
       <div className="flex flex-col gap-y-3 max-w-2xl mx-auto">
         <svg
           viewBox="0 0 46 32"
@@ -30,18 +30,18 @@ export default function Introduction() {
         <div className="mt-5">
           {user ? (
             <Link
-              className="bg-black text-white text-lg font-bold px-3 py-1.5 rounded-md hover:text-black hover:bg-[#EDF2F7] duration-700 w-fit mx-auto sm:mx-0"
+              className="bg-white text-lg font-bold px-3 py-1.5 rounded-md hover:text-black hover:bg-[#EDF2F7] duration-700 w-fit mx-auto sm:mx-0"
               href="/sites"
             >
               View Dashboard
             </Link>
           ) : (
-            <Link
+            <a
               className="bg-black text-white text-lg font-bold px-3 py-1.5 rounded-md hover:text-black hover:bg-[#EDF2F7] duration-700 w-fit mx-auto sm:mx-0"
               href="/api/auth/login"
             >
               Start now
-            </Link>
+            </a>
           )}
         </div>
       </div>

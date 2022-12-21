@@ -1,3 +1,3 @@
 export default function Example() {
-  return <div>example</div>;
+  return <div className="bg-black"></div>;
 }

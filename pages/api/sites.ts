@@ -5,7 +5,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   const session = await getSession(req, res);
 
-  const uid = session?.user.sid;
+  const uid = session?.user.sub;
 
   const sites = await getUserSites(uid);
 
