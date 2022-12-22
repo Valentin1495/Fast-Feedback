@@ -5,6 +5,7 @@ import supabase from "../lib/supabase";
 import useSWR from "swr";
 import fetcher from "../utils/fetcher";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import { getUserSites } from "@/utils/helpers";
 
 export default function AddSite({
   setOpenToast,
@@ -60,8 +61,8 @@ export default function AddSite({
 
     const { id, created_at } = newSite[0];
 
-    await mutate({
-      optimisticData: [{ ...newSite[0], id, created_at }, ...data],
+    await mutate(getUserSites(user?.sub as string), {
+      optimisticData: [...data, { ...newSite[0], id, created_at }],
       populateCache: true,
       revalidate: false,
     });

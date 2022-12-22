@@ -13,7 +13,7 @@ export default function Sites() {
   const { data, isLoading } = useSWR("/api/sites", fetcher);
 
   if (isLoading) {
-    return "Loading...";
+    return "loading...";
   }
 
   return (
